@@ -1,12 +1,12 @@
 import { z } from "zod";
-import axios from "axios";
+import axios from "../utils/axiosAcp.js";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { API_CONFIG } from "./config.js";
 import { ExaSearchRequest, ExaSearchResponse } from "../types.js";
 import { createRequestLogger } from "../utils/logger.js";
 import { checkpoint } from "agnost";
 
-export function registerCompanyResearchTool(server: McpServer, config?: { exaApiKey?: string }): void {
+export function registerCompanyResearchTool(server: McpServer, config?: { acpToken?: string }): void {
   server.tool(
     "company_research_exa",
     "Research companies using Exa AI - finds comprehensive information about businesses, organizations, and corporations. Provides insights into company operations, news, financial information, and industry analysis.",
@@ -21,16 +21,15 @@ export function registerCompanyResearchTool(server: McpServer, config?: { exaApi
       logger.start(companyName);
       
       try {
-        // Create a fresh axios instance for each request
         const axiosInstance = axios.create({
           baseURL: API_CONFIG.BASE_URL,
           headers: {
             'accept': 'application/json',
             'content-type': 'application/json',
-            'x-api-key': config?.exaApiKey || process.env.EXA_API_KEY || '',
             'x-exa-integration': 'company-research-mcp'
           },
-          timeout: 25000
+          timeout: 25000,
+          acpToken: config?.acpToken
         });
 
         const searchRequest: ExaSearchRequest = {

@@ -16,9 +16,9 @@ import { registerDeepResearchCheckTool } from "./tools/deepResearchCheck.js";
 import { registerExaCodeTool } from "./tools/exaCode.js";
 import { log } from "./utils/logger.js";
 
-// Configuration schema for the EXA API key and tool selection
+// Configuration schema for tool selection and ACP authentication
 export const configSchema = z.object({
-  exaApiKey: z.string().optional().describe("Exa AI API key for search operations"),
+  acpToken: z.string().optional().describe("ACP token for proxy authentication (can also be set via ACP_TOKEN env var or .env file)"),
   enabledTools: z.union([
     z.array(z.string()),
     z.string()
@@ -116,42 +116,42 @@ export default function ({ config }: { config: z.infer<typeof configSchema> }) {
     const registeredTools: string[] = [];
     
     if (shouldRegisterTool('web_search_exa')) {
-      registerWebSearchTool(server, normalizedConfig);
+      registerWebSearchTool(server, config);
       registeredTools.push('web_search_exa');
     }
-    
+
     if (shouldRegisterTool('deep_search_exa')) {
-      registerDeepSearchTool(server, normalizedConfig);
+      registerDeepSearchTool(server, config);
       registeredTools.push('deep_search_exa');
     }
-    
+
     if (shouldRegisterTool('company_research_exa')) {
-      registerCompanyResearchTool(server, normalizedConfig);
+      registerCompanyResearchTool(server, config);
       registeredTools.push('company_research_exa');
     }
-    
+
     if (shouldRegisterTool('crawling_exa')) {
-      registerCrawlingTool(server, normalizedConfig);
+      registerCrawlingTool(server, config);
       registeredTools.push('crawling_exa');
     }
-    
+
     if (shouldRegisterTool('linkedin_search_exa')) {
-      registerLinkedInSearchTool(server, normalizedConfig);
+      registerLinkedInSearchTool(server, config);
       registeredTools.push('linkedin_search_exa');
     }
-    
+
     if (shouldRegisterTool('deep_researcher_start')) {
-      registerDeepResearchStartTool(server, normalizedConfig);
+      registerDeepResearchStartTool(server, config);
       registeredTools.push('deep_researcher_start');
     }
-    
+
     if (shouldRegisterTool('deep_researcher_check')) {
-      registerDeepResearchCheckTool(server, normalizedConfig);
+      registerDeepResearchCheckTool(server, config);
       registeredTools.push('deep_researcher_check');
     }
-    
+
     if (shouldRegisterTool('get_code_context_exa')) {
-      registerExaCodeTool(server, normalizedConfig);
+      registerExaCodeTool(server, config);
       registeredTools.push('get_code_context_exa');
     }
     

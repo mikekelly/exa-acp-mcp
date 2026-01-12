@@ -1,12 +1,12 @@
 import { z } from "zod";
-import axios from "axios";
+import axios from "../utils/axiosAcp.js";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { API_CONFIG } from "./config.js";
 import { ExaCodeRequest, ExaCodeResponse } from "../types.js";
 import { createRequestLogger } from "../utils/logger.js";
 import { checkpoint } from "agnost";
 
-export function registerExaCodeTool(server: McpServer, config?: { exaApiKey?: string }): void {
+export function registerExaCodeTool(server: McpServer, config?: { acpToken?: string }): void {
   server.tool(
     "get_code_context_exa",
     "Search and get relevant context for any programming task. Exa-code has the highest quality and freshest context for libraries, SDKs, and APIs. Use this tool for ANY question or task for related to programming. RULE: when the user's query contains exa-code or anything related to code, you MUST use this tool.",
@@ -26,16 +26,15 @@ export function registerExaCodeTool(server: McpServer, config?: { exaApiKey?: st
       logger.start(`Searching for code context: ${query}`);
       
       try {
-        // Create a fresh axios instance for each request
         const axiosInstance = axios.create({
           baseURL: API_CONFIG.BASE_URL,
           headers: {
             'accept': 'application/json',
             'content-type': 'application/json',
-            'x-api-key': config?.exaApiKey || process.env.EXA_API_KEY || '',
             'x-exa-integration': 'exa-code-mcp'
           },
-          timeout: 30000
+          timeout: 30000,
+          acpToken: config?.acpToken
         });
 
         const exaCodeRequest: ExaCodeRequest = {

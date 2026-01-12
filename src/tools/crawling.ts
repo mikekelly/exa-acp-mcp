@@ -1,11 +1,11 @@
 import { z } from "zod";
-import axios from "axios";
+import axios from "../utils/axiosAcp.js";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { API_CONFIG } from "./config.js";
 import { createRequestLogger } from "../utils/logger.js";
 import { checkpoint } from "agnost";
 
-export function registerCrawlingTool(server: McpServer, config?: { exaApiKey?: string }): void {
+export function registerCrawlingTool(server: McpServer, config?: { acpToken?: string }): void {
   server.tool(
     "crawling_exa",
     "Extract and crawl content from specific URLs using Exa AI - retrieves full text content, metadata, and structured information from web pages. Ideal for extracting detailed content from known URLs.",
@@ -20,16 +20,15 @@ export function registerCrawlingTool(server: McpServer, config?: { exaApiKey?: s
       logger.start(url);
       
       try {
-        // Create a fresh axios instance for each request
         const axiosInstance = axios.create({
           baseURL: API_CONFIG.BASE_URL,
           headers: {
             'accept': 'application/json',
             'content-type': 'application/json',
-            'x-api-key': config?.exaApiKey || process.env.EXA_API_KEY || '',
             'x-exa-integration': 'crawling-mcp'
           },
-          timeout: 25000
+          timeout: 25000,
+          acpToken: config?.acpToken
         });
 
         const crawlRequest = {

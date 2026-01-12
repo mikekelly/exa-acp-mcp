@@ -1,12 +1,12 @@
 import { z } from "zod";
-import axios from "axios";
+import axios from "../utils/axiosAcp.js";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { API_CONFIG } from "./config.js";
 import { ExaSearchRequest, ExaSearchResponse } from "../types.js";
 import { createRequestLogger } from "../utils/logger.js";
 import { checkpoint } from "agnost";
 
-export function registerLinkedInSearchTool(server: McpServer, config?: { exaApiKey?: string }): void {
+export function registerLinkedInSearchTool(server: McpServer, config?: { acpToken?: string }): void {
   server.tool(
     "linkedin_search_exa",
     "Search LinkedIn profiles and companies using Exa AI - finds professional profiles, company pages, and business-related content on LinkedIn. Useful for networking, recruitment, and business research.",
@@ -22,16 +22,15 @@ export function registerLinkedInSearchTool(server: McpServer, config?: { exaApiK
       logger.start(`${query} (${searchType || 'all'})`);
       
       try {
-        // Create a fresh axios instance for each request
         const axiosInstance = axios.create({
           baseURL: API_CONFIG.BASE_URL,
           headers: {
             'accept': 'application/json',
             'content-type': 'application/json',
-            'x-api-key': config?.exaApiKey || process.env.EXA_API_KEY || '',
             'x-exa-integration': 'linkedin-search-mcp'
           },
-          timeout: 25000
+          timeout: 25000,
+          acpToken: config?.acpToken
         });
 
         let searchQuery = query;

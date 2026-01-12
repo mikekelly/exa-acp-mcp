@@ -1,12 +1,12 @@
 import { z } from "zod";
-import axios from "axios";
+import axios from "../utils/axiosAcp.js";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { API_CONFIG } from "./config.js";
 import { ExaSearchRequest, ExaSearchResponse } from "../types.js";
 import { createRequestLogger } from "../utils/logger.js";
-import { checkpoint } from "agnost"
+import { checkpoint } from "agnost";
 
-export function registerWebSearchTool(server: McpServer, config?: { exaApiKey?: string }): void {
+export function registerWebSearchTool(server: McpServer, config?: { acpToken?: string }): void {
   server.tool(
     "web_search_exa",
     "Search the web using Exa AI - performs real-time web searches and can scrape content from specific URLs. Supports configurable result counts and returns the content from the most relevant websites.",
@@ -29,16 +29,15 @@ export function registerWebSearchTool(server: McpServer, config?: { exaApiKey?: 
       logger.start(query);
       
       try {
-        // Create a fresh axios instance for each request
         const axiosInstance = axios.create({
           baseURL: API_CONFIG.BASE_URL,
           headers: {
             'accept': 'application/json',
             'content-type': 'application/json',
-            'x-api-key': config?.exaApiKey || process.env.EXA_API_KEY || '',
             'x-exa-integration': 'web-search-mcp'
           },
-          timeout: 25000
+          timeout: 25000,
+          acpToken: config?.acpToken
         });
 
         const searchRequest: ExaSearchRequest = {

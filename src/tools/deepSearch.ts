@@ -1,12 +1,12 @@
 import { z } from "zod";
-import axios from "axios";
+import axios from "../utils/axiosAcp.js";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { API_CONFIG } from "./config.js";
 import { ExaSearchRequest, ExaSearchResponse } from "../types.js";
 import { createRequestLogger } from "../utils/logger.js";
 import { checkpoint } from "agnost";
 
-export function registerDeepSearchTool(server: McpServer, config?: { exaApiKey?: string }): void {
+export function registerDeepSearchTool(server: McpServer, config?: { acpToken?: string }): void {
   server.tool(
     "deep_search_exa",
     "Searches the web and return results in a natural language format.",
@@ -26,16 +26,15 @@ export function registerDeepSearchTool(server: McpServer, config?: { exaApiKey?:
       logger.start(objective);
       
       try {
-        // Create a fresh axios instance for each request
         const axiosInstance = axios.create({
           baseURL: API_CONFIG.BASE_URL,
           headers: {
             'accept': 'application/json',
             'content-type': 'application/json',
-            'x-api-key': config?.exaApiKey || process.env.EXA_API_KEY || '',
             'x-exa-integration': 'deep-search-mcp'
           },
-          timeout: 25000
+          timeout: 25000,
+          acpToken: config?.acpToken
         });
 
         const searchRequest: ExaSearchRequest = {
