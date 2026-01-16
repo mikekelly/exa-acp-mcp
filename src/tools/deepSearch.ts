@@ -1,12 +1,12 @@
 import { z } from "zod";
-import axios from "../utils/axiosAcp.js";
+import axios from "../utils/axiosGap.js";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { API_CONFIG } from "./config.js";
 import { ExaSearchRequest, ExaSearchResponse } from "../types.js";
 import { createRequestLogger } from "../utils/logger.js";
 import { checkpoint } from "agnost";
 
-export function registerDeepSearchTool(server: McpServer, config?: { acpToken?: string }): void {
+export function registerDeepSearchTool(server: McpServer, config?: { gapToken?: string }): void {
   server.tool(
     "deep_search_exa",
     "Searches the web and return results in a natural language format.",
@@ -34,7 +34,7 @@ export function registerDeepSearchTool(server: McpServer, config?: { acpToken?: 
             'x-exa-integration': 'deep-search-mcp'
           },
           timeout: 25000,
-          acpToken: config?.acpToken
+          gapToken: config?.gapToken
         });
 
         const searchRequest: ExaSearchRequest = {

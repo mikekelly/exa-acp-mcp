@@ -1,11 +1,11 @@
 import { z } from "zod";
-import axios from "../utils/axiosAcp.js";
+import axios from "../utils/axiosGap.js";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { API_CONFIG } from "./config.js";
 import { createRequestLogger } from "../utils/logger.js";
 import { checkpoint } from "agnost";
 
-export function registerCrawlingTool(server: McpServer, config?: { acpToken?: string }): void {
+export function registerCrawlingTool(server: McpServer, config?: { gapToken?: string }): void {
   server.tool(
     "crawling_exa",
     "Extract and crawl content from specific URLs using Exa AI - retrieves full text content, metadata, and structured information from web pages. Ideal for extracting detailed content from known URLs.",
@@ -28,7 +28,7 @@ export function registerCrawlingTool(server: McpServer, config?: { acpToken?: st
             'x-exa-integration': 'crawling-mcp'
           },
           timeout: 25000,
-          acpToken: config?.acpToken
+          gapToken: config?.gapToken
         });
 
         const crawlRequest = {

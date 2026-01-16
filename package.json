@@ -1,23 +1,23 @@
 {
-  "name": "exa-acp-mcp",
+  "name": "exa-gapped-mcp",
   "version": "0.1.0",
-  "description": "A fork of exa-mcp-server that routes requests through ACP (Agent Credential Proxy) for secure credential management. Provides Exa AI web search and code context tools via MCP.",
+  "description": "A fork of exa-mcp-server that routes requests through GAP (Gated Agent Proxy) for secure credential management. Provides Exa AI web search and code context tools via MCP.",
   "type": "module",
   "module": "./src/index.ts",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mikekelly/exa-acp-mcp.git"
+    "url": "git+https://github.com/mikekelly/exa-gapped-mcp.git"
   },
   "bin": {
-    "exa-acp-mcp": ".smithery/stdio/index.cjs"
+    "exa-gapped-mcp": ".smithery/stdio/index.cjs"
   },
   "files": [
     ".smithery"
   ],
   "keywords": [
     "mcp",
-    "acp",
-    "agent-credential-proxy",
+    "gap",
+    "gated-agent-proxy",
     "exa",
     "search",
     "websearch",

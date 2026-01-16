@@ -1,12 +1,12 @@
 import { z } from "zod";
-import axios from "../utils/axiosAcp.js";
+import axios from "../utils/axiosGap.js";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { API_CONFIG } from "./config.js";
 import { ExaSearchRequest, ExaSearchResponse } from "../types.js";
 import { createRequestLogger } from "../utils/logger.js";
 import { checkpoint } from "agnost";
 
-export function registerCompanyResearchTool(server: McpServer, config?: { acpToken?: string }): void {
+export function registerCompanyResearchTool(server: McpServer, config?: { gapToken?: string }): void {
   server.tool(
     "company_research_exa",
     "Research companies using Exa AI - finds comprehensive information about businesses, organizations, and corporations. Provides insights into company operations, news, financial information, and industry analysis.",
@@ -29,7 +29,7 @@ export function registerCompanyResearchTool(server: McpServer, config?: { acpTok
             'x-exa-integration': 'company-research-mcp'
           },
           timeout: 25000,
-          acpToken: config?.acpToken
+          gapToken: config?.gapToken
         });
 
         const searchRequest: ExaSearchRequest = {

@@ -16,9 +16,9 @@ import { registerDeepResearchCheckTool } from "./tools/deepResearchCheck.js";
 import { registerExaCodeTool } from "./tools/exaCode.js";
 import { log } from "./utils/logger.js";
 
-// Configuration schema for tool selection and ACP authentication
+// Configuration schema for tool selection and GAP authentication
 export const configSchema = z.object({
-  acpToken: z.string().optional().describe("ACP token for proxy authentication (can also be set via ACP_TOKEN env var or .env file)"),
+  gapToken: z.string().optional().describe("GAP token for proxy authentication (can also be set via GAP_TOKEN env var or .env file)"),
   enabledTools: z.union([
     z.array(z.string()),
     z.string()

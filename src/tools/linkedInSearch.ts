@@ -1,12 +1,12 @@
 import { z } from "zod";
-import axios from "../utils/axiosAcp.js";
+import axios from "../utils/axiosGap.js";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { API_CONFIG } from "./config.js";
 import { ExaSearchRequest, ExaSearchResponse } from "../types.js";
 import { createRequestLogger } from "../utils/logger.js";
 import { checkpoint } from "agnost";
 
-export function registerLinkedInSearchTool(server: McpServer, config?: { acpToken?: string }): void {
+export function registerLinkedInSearchTool(server: McpServer, config?: { gapToken?: string }): void {
   server.tool(
     "linkedin_search_exa",
     "Search LinkedIn profiles and companies using Exa AI - finds professional profiles, company pages, and business-related content on LinkedIn. Useful for networking, recruitment, and business research.",
@@ -30,7 +30,7 @@ export function registerLinkedInSearchTool(server: McpServer, config?: { acpToke
             'x-exa-integration': 'linkedin-search-mcp'
           },
           timeout: 25000,
-          acpToken: config?.acpToken
+          gapToken: config?.gapToken
         });
 
         let searchQuery = query;

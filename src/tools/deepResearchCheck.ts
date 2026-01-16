@@ -1,5 +1,5 @@
 import { z } from "zod";
-import axios from "../utils/axiosAcp.js";
+import axios from "../utils/axiosGap.js";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { API_CONFIG } from "./config.js";
 import { DeepResearchCheckResponse, DeepResearchErrorResponse } from "../types.js";
@@ -11,7 +11,7 @@ function delay(ms: number): Promise<void> {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-export function registerDeepResearchCheckTool(server: McpServer, config?: { acpToken?: string }): void {
+export function registerDeepResearchCheckTool(server: McpServer, config?: { gapToken?: string }): void {
   server.tool(
     "deep_researcher_check",
     "Check the status and retrieve results of a deep research task. This tool monitors the progress of an AI agent that performs comprehensive web searches, analyzes multiple sources, and synthesizes findings into detailed research reports. The tool includes a built-in 5-second delay before checking to allow processing time. IMPORTANT: You must call this tool repeatedly (poll) until the status becomes 'completed' to get the final research results. When status is 'running', wait a few seconds and call this tool again with the same task ID.",
@@ -38,7 +38,7 @@ export function registerDeepResearchCheckTool(server: McpServer, config?: { acpT
             'x-exa-integration': 'deep-research-mcp'
           },
           timeout: 25000,
-          acpToken: config?.acpToken
+          gapToken: config?.gapToken
         });
 
         logger.log(`Checking status for task: ${taskId}`);

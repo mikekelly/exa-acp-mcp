@@ -1,12 +1,12 @@
 import { z } from "zod";
-import axios from "../utils/axiosAcp.js";
+import axios from "../utils/axiosGap.js";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { API_CONFIG } from "./config.js";
 import { ExaSearchRequest, ExaSearchResponse } from "../types.js";
 import { createRequestLogger } from "../utils/logger.js";
 import { checkpoint } from "agnost";
 
-export function registerWebSearchTool(server: McpServer, config?: { acpToken?: string }): void {
+export function registerWebSearchTool(server: McpServer, config?: { gapToken?: string }): void {
   server.tool(
     "web_search_exa",
     "Search the web using Exa AI - performs real-time web searches and can scrape content from specific URLs. Supports configurable result counts and returns the content from the most relevant websites.",
@@ -37,7 +37,7 @@ export function registerWebSearchTool(server: McpServer, config?: { acpToken?: s
             'x-exa-integration': 'web-search-mcp'
           },
           timeout: 25000,
-          acpToken: config?.acpToken
+          gapToken: config?.gapToken
         });
 
         const searchRequest: ExaSearchRequest = {
